@@ -1,4 +1,8 @@
 package com.eventbooking.events.exceptions;
 
-public class UserExistException extends Throwable {
+public class UserException extends Throwable {
+
+    public UserException(String message){
+        super(message);
+    }
 }

@@ -1,2 +1,8 @@
-package com.eventbooking.events.data.model;public enum Category {
+package com.eventbooking.events.data.model;
+
+import lombok.Getter;
+
+@Getter
+public enum Category {
+    CONCERT, CONFERENCE, GAME
 }
