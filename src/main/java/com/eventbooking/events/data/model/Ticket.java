@@ -4,20 +4,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Setter
 @Getter
-public class Event {
+public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String eventName;
+    private Long eventId;
+    @Enumerated(EnumType.STRING)
+    private TicketCategory category;
+    private BigDecimal price;
     private LocalDate date;
-    private Integer attendees;
-    private String description;
-    @Enumerated(value = EnumType.STRING)
-    private Category category;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Event event;
 }

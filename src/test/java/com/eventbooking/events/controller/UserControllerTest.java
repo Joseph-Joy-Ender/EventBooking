@@ -1,4 +1,4 @@
-package com.eventbooking.events.services;
+package com.eventbooking.events.controller;
 
 import com.eventbooking.events.dtos.request.CreateAccountRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class controllertest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -28,6 +28,37 @@ public class controllertest {
         accountRequest.setName("Joseph Joy Ender");
         accountRequest.setPassword("Joseph1234JJ3245");
         accountRequest.setEmail("Joseph234@gmail.com");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/createAccount")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(accountRequest)))
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
+
+    }
+
+    @Test
+    public void testCreateAccountValidation() throws Exception {
+        CreateAccountRequest accountRequest = new CreateAccountRequest();
+        accountRequest.setName("Udeme Akpan");
+        accountRequest.setPassword("UdemeAkpan123");
+        accountRequest.setEmail("UdemeAkpan11234@gmail.com");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/createAccount")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(accountRequest)))
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
+
+    }
+
+
+    @Test
+    public void testCreateAccountValidationCharacter() throws Exception {
+        CreateAccountRequest accountRequest = new CreateAccountRequest();
+        accountRequest.setName("Precious Ujong");
+        accountRequest.setPassword("Precious123Ujong");
+        accountRequest.setEmail("PreciousUjong11234@gmail.com");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/createAccount")
                 .contentType(MediaType.APPLICATION_JSON)

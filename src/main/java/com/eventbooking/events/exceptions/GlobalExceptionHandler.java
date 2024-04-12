@@ -22,6 +22,14 @@ public class GlobalExceptionHandler {
                 .build(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(EventExistException.class)
+    public ResponseEntity<ExceptionApiResponse> eventExist(EventExistException existException){
+        return new ResponseEntity<>(ExceptionApiResponse.builder()
+                .data(existException.getMessage())
+                .isSuccessful(false)
+                .build(), HttpStatus.BAD_REQUEST);
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
