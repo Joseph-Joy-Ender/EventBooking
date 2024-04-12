@@ -8,6 +8,7 @@ public class GenerateApiResponse {
     public static final String REGISTER_SUCCESSFUL = "User registered successfully";
     public static final String EVENT_WITH_THIS_DATE_AND_NAME_EXIST = "Event with this name and date already exist";
     public static final String USER_NOT_FOUND = "User with this email is not found";
+    public static final String EVENT_DOES_NOT_EXIST = "Event does not exist";
 
     public static CreateAccountResponse create(Object data){
         return CreateAccountResponse.builder()

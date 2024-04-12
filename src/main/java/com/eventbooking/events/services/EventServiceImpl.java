@@ -22,7 +22,6 @@ public class EventServiceImpl implements EventService{
         if (eventRepository.existsByDateAndEventName(request.getDate(), request.getEventName())){
             throw new EventExistException(GenerateApiResponse.EVENT_WITH_THIS_DATE_AND_NAME_EXIST);
         }
-
         Event event = mapper.map(request, Event.class);
         eventRepository.save(event);
 
@@ -31,5 +30,12 @@ public class EventServiceImpl implements EventService{
         response.setEventName(request.getEventName());
         response.setDate(request.getDate());
         return response;
+    }
+
+    @Override
+    public Event findEventBy(Long id) throws EventExistException {
+        return eventRepository.findById(id).orElseThrow(
+                ()->new EventExistException(GenerateApiResponse.EVENT_DOES_NOT_EXIST)
+        );
     }
 }

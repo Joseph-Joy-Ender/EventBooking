@@ -1,6 +1,7 @@
 package com.eventbooking.events.services;
 
 import com.eventbooking.events.data.model.Category;
+import com.eventbooking.events.data.model.Event;
 import com.eventbooking.events.dtos.request.AddEventRequest;
 import com.eventbooking.events.dtos.response.AddEventResponse;
 import com.eventbooking.events.exceptions.EventExistException;
@@ -66,5 +67,13 @@ public class EventServiceTest {
 
         assertThat("Burna Boy Concert").isEqualTo(request.getEventName());
         assertThatExceptionOfType(EventExistException.class).isThrownBy(()-> eventService.createEvent(request));
+    }
+
+    @Test
+    public void testThatEventCanBeGottenByTheId() throws EventExistException {
+        Event event = eventService.findEventBy(1L);
+
+        log.info("Found event :: {}", event);
+        assertThat(event).isNotNull();
     }
 }

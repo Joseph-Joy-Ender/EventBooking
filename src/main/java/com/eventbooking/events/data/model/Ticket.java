@@ -14,11 +14,12 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long eventId;
+//    private Long eventId;
     @Enumerated(EnumType.STRING)
     private TicketCategory category;
     private BigDecimal price;
     private LocalDate date;
     @ManyToOne(cascade = CascadeType.ALL)
     private Event event;
+    private String eventName;
 }
