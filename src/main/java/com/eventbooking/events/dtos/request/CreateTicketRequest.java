@@ -12,6 +12,6 @@ public class CreateTicketRequest {
     private TicketCategory category;
     private BigDecimal price;
 //    private LocalDate date;
-    private Long eventId;
+//    private Long eventId;
 
 }

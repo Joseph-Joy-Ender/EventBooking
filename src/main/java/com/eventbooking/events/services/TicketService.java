@@ -5,5 +5,5 @@ import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
 
 public interface TicketService {
-    TicketResponse createTicket(CreateTicketRequest request) throws EventExistException;
+    TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException;
 }

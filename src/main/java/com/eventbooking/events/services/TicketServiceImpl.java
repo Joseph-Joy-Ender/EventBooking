@@ -7,6 +7,7 @@ import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,21 +16,20 @@ public class TicketServiceImpl implements TicketService{
 
     private final EventService eventService;
 
+    private final ModelMapper mapper = new ModelMapper();
+
     private final TicketRepository ticketRepository;
     @Override
-    public TicketResponse createTicket(CreateTicketRequest request) throws EventExistException {
-//        Event event = eventService.findEventBy(request);
-//        Ticket ticket = new Ticket();
-//        ticket.setCategory(request.getCategory());
-//        ticket.setDate(event.getDate());
-//        ticket.setPrice(request.getPrice());
-//        ticket.setEventName(event.getEventName());
-//
-//        ticketRepository.save(ticket);
+    public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
+        Event event = eventService.findEventBy(eventId);
+        Ticket ticket = new Ticket();
+        ticket.setCategory(request.getCategory());
+        ticket.setPrice(request.getPrice());
+        ticket.setEvent(event);
 
-        TicketResponse response = new TicketResponse();
-        response.setMessage("Success");
+        eventService.save(event);
+       Ticket savedTicket =  ticketRepository.save(ticket);
 
-        return response;
+        return mapper.map(savedTicket, TicketResponse.class);
     }
 }

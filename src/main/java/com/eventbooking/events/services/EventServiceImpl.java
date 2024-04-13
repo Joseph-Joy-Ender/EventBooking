@@ -38,4 +38,9 @@ public class EventServiceImpl implements EventService{
                 ()->new EventExistException(GenerateApiResponse.EVENT_DOES_NOT_EXIST)
         );
     }
+
+    @Override
+    public Event save(Event event) {
+        return eventRepository.save(event);
+    }
 }
