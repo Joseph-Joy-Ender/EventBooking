@@ -6,9 +6,13 @@ import com.eventbooking.events.data.repositories.TicketRepository;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
+import com.eventbooking.events.exceptions.TicketException;
+import com.eventbooking.events.utils.GenerateApiResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -34,7 +38,9 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Ticket searchTicketBy() {
-        return null;
+    public List<Ticket> searchTicketBy(String eventName) throws TicketException {
+        List<Ticket> tickets = ticketRepository.findTicketByEventName(eventName);
+        if (tickets.isEmpty()) throw new TicketException(GenerateApiResponse.TICKET_NOT_FOUND);
+        return tickets;
     }
 }

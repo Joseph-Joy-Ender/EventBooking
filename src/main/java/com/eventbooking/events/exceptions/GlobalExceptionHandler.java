@@ -29,6 +29,13 @@ public class GlobalExceptionHandler {
                 .isSuccessful(false)
                 .build(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(TicketException.class)
+    public ResponseEntity<ExceptionApiResponse> eventExist(TicketException ticketException){
+        return new ResponseEntity<>(ExceptionApiResponse.builder()
+                .data(ticketException.getMessage())
+                .isSuccessful(false)
+                .build(), HttpStatus.BAD_REQUEST);
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

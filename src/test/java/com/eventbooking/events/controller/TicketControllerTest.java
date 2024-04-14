@@ -53,4 +53,14 @@ public class TicketControllerTest {
                .andExpect(status().is2xxSuccessful())
                .andDo(print());
     }
+
+    @Test
+    public void testThatTicketCanBeSearchedForUsingTheEventName() throws Exception {
+        String eventName = "Birthday party";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/eventBooking/searchTicketBy/{eventName}", eventName)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is3xxRedirection())
+                .andDo(print());
+    }
 }
