@@ -15,4 +15,5 @@ public class TicketResponse {
     private Long id;
     private TicketCategory category;
     private BigDecimal price;
+    private String eventName;
 }

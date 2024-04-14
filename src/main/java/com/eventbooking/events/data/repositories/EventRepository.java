@@ -7,5 +7,6 @@ import java.time.LocalDate;
 
 public interface EventRepository extends JpaRepository<Event, Long> {
     Boolean existsByDateAndEventName(LocalDate date, String eventName);
+    Event findEventByEventName(String eventName);
 
 }

@@ -23,13 +23,18 @@ public class TicketServiceImpl implements TicketService{
     public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
         Event event = eventService.findEventBy(eventId);
         Ticket ticket = new Ticket();
+        ticket.setEventName(event.getEventName());
+        ticket.setEventDate(event.getDate());
         ticket.setCategory(request.getCategory());
         ticket.setPrice(request.getPrice());
-        ticket.setEvent(event);
 
-        eventService.save(event);
-       Ticket savedTicket =  ticketRepository.save(ticket);
+        Ticket savedTicket =  ticketRepository.save(ticket);
 
         return mapper.map(savedTicket, TicketResponse.class);
+    }
+
+    @Override
+    public Ticket searchTicketBy() {
+        return null;
     }
 }

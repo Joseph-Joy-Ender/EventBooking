@@ -8,7 +8,7 @@ import com.eventbooking.events.exceptions.EventExistException;
 public interface EventService {
     AddEventResponse createEvent(AddEventRequest request) throws EventExistException;
 
-    Event findEventBy(Long id) throws EventExistException;
+    Event findEventBy(Long eventId) throws EventExistException;
 
     Event save(Event event);
 }

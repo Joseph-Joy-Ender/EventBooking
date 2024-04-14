@@ -22,10 +22,9 @@ class TicketServiceImplTest {
         request.setCategory(TicketCategory.EARLYBIRD);
         request.setPrice(BigDecimal.valueOf(20000));
 
+
         TicketResponse response = ticketService.createTicket(1L, request);
         assertThat(response).isNotNull();
-
-
 
     }
 

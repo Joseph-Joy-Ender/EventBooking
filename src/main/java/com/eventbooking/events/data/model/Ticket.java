@@ -17,8 +17,8 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketCategory category;
     private BigDecimal price;
-    private LocalDate date;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Event event;
+    private LocalDate eventDate;
+    private String eventName;
+
 
 }
