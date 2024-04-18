@@ -60,7 +60,7 @@ public class TicketControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/eventBooking/searchTicketBy/{eventName}", eventName)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(status().is2xxSuccessful())
                 .andDo(print());
     }
 }

@@ -63,6 +63,12 @@ class TicketServiceImplTest {
 
     @Test
     public void testThatATicketCanBeReserved(){
+        //TODO
+        // To reserve a ticket for user
+        // first we need to find the user by the id
+        // second we need to find the ticket by id or eventName
+        //
+
 
     }
 

@@ -1,6 +1,9 @@
 package com.eventbooking.events.controller;
 
+import com.eventbooking.events.data.model.Category;
+import com.eventbooking.events.dtos.request.AddEventRequest;
 import com.eventbooking.events.dtos.request.CreateAccountRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,6 +70,28 @@ public class UserControllerTest {
                 .content(mapper.writeValueAsBytes(accountRequest)))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print());
+
+    }
+
+    @Test
+    public void testThatUserCanCreateEvent() throws Exception {
+        AddEventRequest request = new AddEventRequest();
+        request.setEmail("FavourMbata@gmail.com");
+        request.setEventName("Scrabble Tournament");
+        request.setAttendees(950);
+        request.setDate(LocalDate.of(2025, 1, 12));
+        request.setCategory("GAME");
+        request.setDescription("Scrabble game tournament to enhance learning");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/addEvent")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsBytes(request)))
+                .andExpect(status().is2xxSuccessful())
+                .andDo(print());
+    }
+
+    @Test
+    public void testThatUserCanSearchTicketByEventName(){
 
     }
 }

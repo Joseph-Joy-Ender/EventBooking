@@ -31,6 +31,6 @@ public class TicketController {
 
     @GetMapping("searchTicketBy/{eventName}")
     public ResponseEntity<List<Ticket>> searchTicket(@PathVariable String eventName) throws TicketException {
-        return new ResponseEntity<>(ticketService.searchTicketBy(eventName), HttpStatus.FOUND);
+        return new ResponseEntity<>(ticketService.searchTicketBy(eventName), HttpStatus.OK);
     }
 }

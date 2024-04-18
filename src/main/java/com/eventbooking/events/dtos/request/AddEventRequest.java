@@ -27,5 +27,6 @@ public class AddEventRequest {
     @Size(max = 500)
     private String description;
     private String category;
+    private String email;
 
 }
