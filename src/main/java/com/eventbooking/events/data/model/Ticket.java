@@ -19,6 +19,7 @@ public class Ticket {
     private BigDecimal price;
     private LocalDate eventDate;
     private String eventName;
-
+    @Enumerated(EnumType.STRING)
+    private TicketStatus ticketStatus;
 
 }

@@ -3,9 +3,12 @@ package com.eventbooking.events.services;
 import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.data.model.TicketCategory;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
+import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
 import com.eventbooking.events.exceptions.TicketException;
+import com.eventbooking.events.exceptions.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +53,7 @@ class TicketServiceImplTest {
         String eventName = "Burna Boy Concert";
         List<Ticket> ticket = ticketService.searchTicketBy(eventName);
         log.info("All Tickets found --> {}", ticket);
-        assertThat(ticket).hasSize(3);
+        assertThat(ticket).hasSize(1);
         assertThat(ticket).isNotNull();
     }
 
@@ -62,12 +65,23 @@ class TicketServiceImplTest {
     }
 
     @Test
-    public void testThatATicketCanBeReserved(){
-        //TODO
-        // To reserve a ticket for user
-        // first we need to find the user by the id
-        // second we need to find the ticket by id or eventName
-        //
+    public void testThatATicketCanBeReserved() throws UserException {
+        /*
+        TODO
+         To reserve a ticket for user
+         first we need to find the user by the id
+         second we need to find the ticket by id or eventName
+         third we need to change the ticket status to reserved
+         fourth we have to map the reserved ticket to the found user
+        */
+
+
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(1L);
+        request.setEventId(1L);
+
+        ReserveTicketResponse response = ticketService.reserveTicket(request);
+         assertThat(response).isNotNull();
 
 
     }

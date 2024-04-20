@@ -13,6 +13,7 @@ import com.eventbooking.events.exceptions.UserException;
 import com.eventbooking.events.utils.GenerateApiResponse;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,9 +27,14 @@ public class UserServiceImpl implements UserService{
 
     private final EventService eventService;
 
-    private final TicketService ticketService;
+    private TicketService ticketService;
 
     private final ModelMapper mapper = new ModelMapper();
+
+
+    public void setTicketService(@Autowired TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
 
     @Override
     public CreateAccountResponse createAccount(CreateAccountRequest accountRequest) throws UserException {
@@ -50,5 +56,11 @@ public class UserServiceImpl implements UserService{
         Optional<User> user = userRepository.findUserByEmail(email);
         if (user.isPresent()) return ticketService.searchTicketBy(eventName);
         throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
+    }
+
+    @Override
+    public User findById(Long userId) throws UserException {
+        return userRepository.findById(userId)
+                .orElseThrow(()-> new UserException(GenerateApiResponse.USER_NOT_FOUND));
     }
 }
