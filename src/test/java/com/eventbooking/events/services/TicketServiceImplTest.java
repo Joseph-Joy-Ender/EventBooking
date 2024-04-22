@@ -82,8 +82,6 @@ class TicketServiceImplTest {
 
         ReserveTicketResponse response = ticketService.reserveTicket(request);
          assertThat(response).isNotNull();
-
-
     }
 
 

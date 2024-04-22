@@ -11,7 +11,6 @@ import com.eventbooking.events.exceptions.EventExistException;
 import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 import com.eventbooking.events.utils.GenerateApiResponse;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,17 +19,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService{
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    private final EventService eventService;
+    private EventService eventService;
 
     private TicketService ticketService;
 
     private final ModelMapper mapper = new ModelMapper();
 
+    public void setUserRepository(@Autowired UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public void setEventService(@Autowired EventService eventService) {
+        this.eventService = eventService;
+    }
 
     public void setTicketService(@Autowired TicketService ticketService) {
         this.ticketService = ticketService;
@@ -38,7 +43,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public CreateAccountResponse createAccount(CreateAccountRequest accountRequest) throws UserException {
-        if (userRepository.existsByEmail(accountRequest.getEmail())) throw new UserException(GenerateApiResponse.ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXIST);
+        if (userRepository.existsByEmail(accountRequest.getEmail()))
+            throw new UserException(
+                GenerateApiResponse.ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXIST);
         User user = mapper.map(accountRequest, User.class);
         userRepository.save(user);
         return GenerateApiResponse.create(GenerateApiResponse.REGISTER_SUCCESSFUL);

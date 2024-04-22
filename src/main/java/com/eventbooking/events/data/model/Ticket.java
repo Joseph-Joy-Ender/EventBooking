@@ -21,5 +21,7 @@ public class Ticket {
     private String eventName;
     @Enumerated(EnumType.STRING)
     private TicketStatus ticketStatus;
+    @ManyToOne
+    private User user;
 
 }

@@ -23,21 +23,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class TicketServiceImpl implements TicketService{
 
-    private final EventService eventService;
+    private EventService eventService;
 
+    @Autowired
     private UserService userService;
-
-
-    public void setUserService(@Autowired UserService userService) {
-        this.userService = userService;
-    }
 
     private final ModelMapper mapper = new ModelMapper();
 
-    private final TicketRepository ticketRepository;
+    public void setEventService(@Autowired EventService eventService) {
+        this.eventService = eventService;
+    }
+//    public void setUserService(@Autowired UserService userService) {
+//        this.userService = userService;
+//    }
+
+    @Autowired
+    private TicketRepository ticketRepository;
+
+//    public void setTicketRepository(@Autowired TicketRepository ticketRepository) {
+//        this.ticketRepository = ticketRepository;
+//    }
+
     @Override
     public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
         Event event = eventService.findEventBy(eventId);
@@ -64,6 +72,12 @@ public class TicketServiceImpl implements TicketService{
     public ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException {
         Optional<Ticket> ticket = ticketRepository.findById(request.getEventId());
         User user = userService.findById(request.getUserId());
-        return null;
+        Ticket foundTicket = ticket.get();
+        foundTicket.setTicketStatus(TicketStatus.RESERVED);
+        foundTicket.setUser(user);
+        ticketRepository.save(foundTicket);
+        ReserveTicketResponse response = new ReserveTicketResponse();
+        response.setMessage(GenerateApiResponse.TICKET_RESERVED_SUCCESSFULLY);
+        return response;
     }
 }
