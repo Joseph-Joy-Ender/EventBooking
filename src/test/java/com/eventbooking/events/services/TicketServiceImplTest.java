@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
@@ -47,6 +46,16 @@ class TicketServiceImplTest {
         assertThat(response).isNotNull();
 
     }
+    @Test
+    public void testThatTicketCanBeCreated3() throws EventExistException {
+        CreateTicketRequest request = new CreateTicketRequest();
+        request.setCategory(TicketCategory.PREMIUM);
+        request.setPrice(BigDecimal.valueOf(40000));
+
+        TicketResponse response = ticketService.createTicket(3L, request);
+        assertThat(response).isNotNull();
+
+    }
 
     @Test
     public void testThatTicketCanBeSearched() throws TicketException {
@@ -64,25 +73,45 @@ class TicketServiceImplTest {
 
     }
 
-    @Test
-    public void testThatATicketCanBeReserved() throws UserException {
-        /*
-        TODO
-         To reserve a ticket for user
-         first we need to find the user by the id
-         second we need to find the ticket by id or eventName
-         third we need to change the ticket status to reserved
-         fourth we have to map the reserved ticket to the found user
-        */
+        @Test
+    public void testThatUserCanSearchForTicket() throws TicketException, UserException {
+        String eventName = "Birthday party";
+        String email = "Cephas123@gmail.com";
+        List<Ticket> ticket = ticketService.searchTicketBy(email, eventName);
+        assertThat(ticket).hasSize(1);
+        assertThat(ticket).isNotNull();
 
-
-        ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setUserId(1L);
-        request.setEventId(1L);
-
-        ReserveTicketResponse response = ticketService.reserveTicket(request);
-         assertThat(response).isNotNull();
     }
 
+    @Test
+    public void testThatExceptionIsThrownWhenUserIsNotFound() {
+        String eventName = "Birthday party";
+        String email = "Raph123@gmail.com";
+        assertThrows(UserException.class, ()-> ticketService.searchTicketBy(email, eventName));
+    }
+
+    @Test
+    public void testThatATicketCanBeReserved() throws UserException {
+
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(3L);
+        request.setEventId(1L);
+
+         ReserveTicketResponse response = ticketService.reserveTicket(request);
+         assertThat(response).isNotNull();
+         assertThat(request.getUserId()).isNotNull();
+    }
+
+    @Test
+    public void testThatTicketCanBeReservedAgain() throws UserException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(4L);
+        request.setEventId(2L);
+
+        ReserveTicketResponse response = ticketService.reserveTicket(request);
+        log.info("Reserved Ticket Response{}", response);
+        assertThat(response).isNotNull();
+        assertThat(request.getUserId()).isNotNull();
+    }
 
 }

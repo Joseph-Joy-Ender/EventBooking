@@ -16,7 +16,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/v1/eventBooking/")
-@CrossOrigin("*")
 @AllArgsConstructor
 public class TicketController {
 

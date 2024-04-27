@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @SpringBootTest
 @Slf4j
-public class EventServiceTest {
+public class EventServiceImplTest {
 
     @Autowired
     private EventService eventService;

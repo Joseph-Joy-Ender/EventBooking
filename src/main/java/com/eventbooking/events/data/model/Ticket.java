@@ -22,6 +22,6 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketStatus ticketStatus;
     @ManyToOne
-    private User user;
+    private Customer customer;
 
 }
