@@ -1,12 +1,14 @@
 package com.eventbooking.events.services;
 
 import com.eventbooking.events.data.model.Customer;
+import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.data.repositories.UserRepository;
 import com.eventbooking.events.dtos.request.AddEventRequest;
 import com.eventbooking.events.dtos.request.CreateAccountRequest;
 import com.eventbooking.events.dtos.response.AddEventResponse;
 import com.eventbooking.events.dtos.response.CreateAccountResponse;
 import com.eventbooking.events.exceptions.EventExistException;
+import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 import com.eventbooking.events.security.user.User;
 import com.eventbooking.events.utils.GenerateApiResponse;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +29,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
     private final EventService eventService;
-
+    private final TicketService ticketService;
     private final ModelMapper mapper = new ModelMapper();
-
 
 
     @Override
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public AddEventResponse createEvent(AddEventRequest request) throws EventExistException, UserException {
         Optional<Customer> user = userRepository.findUserByEmail(request.getEmail());
         if (user.isPresent()) return eventService.createEvent(request);
-        throw  new UserException(GenerateApiResponse.USER_NOT_FOUND);
+        throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
     }
 
     @Override
@@ -62,6 +63,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Customer findById(Long userId) throws UserException {
         return userRepository.findById(userId)
                 .orElseThrow(()-> new UserException(GenerateApiResponse.USER_NOT_FOUND));
+    }
+
+
+    @Override
+    public List<Ticket> searchTicketBy(String email, String eventName) throws UserException, TicketException {
+        Optional<Customer> customer = userRepository.findUserByEmail(email);
+        if (customer.isPresent()) return ticketService.searchTicketBy(eventName);
+        throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
     }
 
     @Override

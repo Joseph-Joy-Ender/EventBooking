@@ -73,23 +73,6 @@ class TicketServiceImplTest {
 
     }
 
-        @Test
-    public void testThatUserCanSearchForTicket() throws TicketException, UserException {
-        String eventName = "Birthday party";
-        String email = "Cephas123@gmail.com";
-        List<Ticket> ticket = ticketService.searchTicketBy(email, eventName);
-        assertThat(ticket).hasSize(1);
-        assertThat(ticket).isNotNull();
-
-    }
-
-    @Test
-    public void testThatExceptionIsThrownWhenUserIsNotFound() {
-        String eventName = "Birthday party";
-        String email = "Raph123@gmail.com";
-        assertThrows(UserException.class, ()-> ticketService.searchTicketBy(email, eventName));
-    }
-
     @Test
     public void testThatATicketCanBeReserved() throws UserException {
 
@@ -112,6 +95,12 @@ class TicketServiceImplTest {
         log.info("Reserved Ticket Response{}", response);
         assertThat(response).isNotNull();
         assertThat(request.getUserId()).isNotNull();
+    }
+
+    @Test
+    public void testThatTicketCanBeBooked(){
+        //TODO
+        //first check if the ticket is reserved
     }
 
 }

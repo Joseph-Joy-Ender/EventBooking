@@ -7,6 +7,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.FetchType.EAGER;
+
 @Entity
 @Getter
 @Setter
@@ -19,7 +21,9 @@ public class Customer {
     private String password;
     @OneToMany
     private List<Ticket> ticketList;
-
-    @ElementCollection
+    @ElementCollection(fetch = EAGER)
     private Set<Role> roles;
+
+
+
 }

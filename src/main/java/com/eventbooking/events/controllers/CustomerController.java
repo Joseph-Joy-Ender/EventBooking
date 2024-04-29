@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/api/v1/eventBooking/")
 @AllArgsConstructor
-public class UserController {
+public class CustomerController {
 
     private final UserService userService;
 

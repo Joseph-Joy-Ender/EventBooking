@@ -1,9 +1,7 @@
 package com.eventbooking.events.controller;
 
-import com.eventbooking.events.data.model.Category;
 import com.eventbooking.events.dtos.request.AddEventRequest;
 import com.eventbooking.events.dtos.request.CreateAccountRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

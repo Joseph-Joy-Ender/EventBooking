@@ -24,7 +24,6 @@ public class EventServiceImpl implements EventService{
         }
         Event event = mapper.map(request, Event.class);
         eventRepository.save(event);
-
         AddEventResponse response = new AddEventResponse();
         response.setId(event.getId());
         response.setEventName(request.getEventName());

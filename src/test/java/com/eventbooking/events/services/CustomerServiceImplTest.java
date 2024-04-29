@@ -2,11 +2,13 @@ package com.eventbooking.events.services;
 
 import com.eventbooking.events.data.model.Category;
 import com.eventbooking.events.data.model.Customer;
+import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.dtos.request.AddEventRequest;
 import com.eventbooking.events.dtos.request.CreateAccountRequest;
 import com.eventbooking.events.dtos.response.AddEventResponse;
 import com.eventbooking.events.dtos.response.CreateAccountResponse;
 import com.eventbooking.events.exceptions.EventExistException;
+import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,4 +86,22 @@ public class CustomerServiceImplTest {
         assertThat(customer).isNotNull();
         log.info("Found user {}", customer);
     }
+
+    @Test
+    public void testThatUserCanSearchForTicket() throws TicketException, UserException {
+        String eventName = "Birthday party";
+        String email = "Cephas123@gmail.com";
+        List<Ticket> ticket = userService.searchTicketBy(email, eventName);
+        assertThat(ticket).hasSize(1);
+        assertThat(ticket).isNotNull();
+
+    }
+
+    @Test
+    public void testThatExceptionIsThrownWhenUserIsNotFound() {
+        String eventName = "Birthday party";
+        String email = "Raph123@gmail.com";
+        assertThrows(UserException.class, ()-> userService.searchTicketBy(email, eventName));
+    }
+
 }

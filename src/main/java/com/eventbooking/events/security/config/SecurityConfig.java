@@ -10,6 +10,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static com.eventbooking.events.data.model.Role.CUSTOMER;
@@ -22,13 +23,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        Filter filter = new AppAuthenticationFilter(authenticationManager);
+        UsernamePasswordAuthenticationFilter filter = new AppAuthenticationFilter(authenticationManager);
         return http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterAt(filter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(c->c.requestMatchers("/login").permitAll())
                 //ADMIN.name()
-                .authorizeHttpRequests(c->c.requestMatchers("/api/v1/customer")
+                .authorizeHttpRequests(c->c.requestMatchers("/api/v1/eventBooking/")
                         .hasAnyAuthority(CUSTOMER.name()))
                 .build();
     }

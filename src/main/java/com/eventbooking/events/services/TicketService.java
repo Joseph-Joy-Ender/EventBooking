@@ -18,5 +18,5 @@ public interface TicketService {
 
     ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException;
 
-    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException, UserException;
+//    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException, UserException;
 }
