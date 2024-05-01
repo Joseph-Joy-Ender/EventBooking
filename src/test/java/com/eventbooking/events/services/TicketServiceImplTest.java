@@ -99,8 +99,15 @@ class TicketServiceImplTest {
 
     @Test
     public void testThatTicketCanBeBooked(){
-        //TODO
-        //first check if the ticket is reserved
+        /*
+        TODO
+        first check if the ticket is reserved
+        second if the ticket is reserved, retrieve the ticket from the database
+        third check if the reserved ticket is still available for booking
+        process payment
+        update ticket status to booked
+        send email to user to confirm booking
+        */
     }
 
 }
