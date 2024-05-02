@@ -25,12 +25,12 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class CustomerServiceImpl implements CustomerService, UserDetailsService {
 
     private PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final EventService eventService;
-    private final TicketService ticketService;
+//    private final TicketService ticketService;
     private final ModelMapper mapper = new ModelMapper();
 
 
@@ -66,12 +66,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    @Override
-    public List<Ticket> searchTicketBy(String email, String eventName) throws UserException, TicketException {
-        Optional<Customer> customer = userRepository.findUserByEmail(email);
-        if (customer.isPresent()) return ticketService.searchTicketBy(eventName);
-        throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
-    }
+
+
+//    @Override
+//    public List<Ticket> searchTicketBy(String email, String eventName) throws UserException, TicketException {
+//        Optional<Customer> customer = userRepository.findUserByEmail(email);
+//        if (customer.isPresent()) return ticketService.searchTicketBy(eventName);
+//        throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

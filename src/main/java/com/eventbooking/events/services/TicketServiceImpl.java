@@ -5,7 +5,6 @@ import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.data.model.TicketStatus;
 import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.repositories.TicketRepository;
-import com.eventbooking.events.data.repositories.UserRepository;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
@@ -15,26 +14,24 @@ import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 import com.eventbooking.events.utils.GenerateApiResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TicketServiceImpl implements TicketService{
 
     private final EventService eventService;
     private final ModelMapper mapper = new ModelMapper();
-    private UserService userService;
+    private final CustomerService customerService;
     private final TicketRepository ticketRepository;
 
-    public void setUserService(@Autowired UserService userService) {
-        this.userService = userService;
-    }
+//    public void setUserService(@Autowired UserService userService) {
+//        this.userService = userService;
+//    }
 
     @Override
     public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
@@ -59,10 +56,18 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
+    public List<Ticket> searchTicketBy(String email, String eventName) throws UserException, TicketException {
+        Customer customer = customerService.findUserBy(email);
+        if (customer != null) return searchTicketBy(eventName);
+        throw new UserException(GenerateApiResponse.USER_NOT_FOUND);
+    }
+
+    @Override
     public ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException {
         Optional<Ticket> ticket = ticketRepository.findById(request.getEventId());
-        Customer customer = userService.findById(request.getUserId());
+        Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
+        foundTicket.setReservationId(request.getReservationId());
         foundTicket.setTicketStatus(TicketStatus.RESERVED);
         foundTicket.setCustomer(customer);
         ticketRepository.save(foundTicket);

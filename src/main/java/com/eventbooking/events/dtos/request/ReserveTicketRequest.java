@@ -8,4 +8,5 @@ import lombok.Setter;
 public class ReserveTicketRequest {
     private Long userId;
     private Long eventId;
+    private Long reservationId;
 }

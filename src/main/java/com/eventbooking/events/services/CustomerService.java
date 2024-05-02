@@ -11,11 +11,13 @@ import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserService {
+public interface CustomerService {
     CreateAccountResponse createAccount(CreateAccountRequest accountRequest) throws UserException;
-    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException;
+//    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException;
     AddEventResponse createEvent(AddEventRequest request) throws EventExistException, UserException;
     Customer findUserBy(String email) throws UserException;
     Customer findById(Long userId) throws UserException;
+
 }
