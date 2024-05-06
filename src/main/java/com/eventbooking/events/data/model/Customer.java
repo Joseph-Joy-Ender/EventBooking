@@ -23,7 +23,7 @@ public class Customer {
     private List<Ticket> ticketList;
     @ElementCollection(fetch = EAGER)
     private Set<Role> roles;
-
+    private String amount;
 
 
 }

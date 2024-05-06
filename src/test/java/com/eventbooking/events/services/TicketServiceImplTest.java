@@ -94,9 +94,9 @@ class TicketServiceImplTest {
     public void testThatATicketCanBeReserved() throws UserException {
 
         ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setUserId(1L);
+        request.setUserId(2L);
         request.setEventId(1L);
-        request.setReservationId(10L);
+//        request.setReservationId(10L);
 
          ReserveTicketResponse response = ticketService.reserveTicket(request);
          assertThat(response).isNotNull();
@@ -106,9 +106,9 @@ class TicketServiceImplTest {
     @Test
     public void testThatTicketCanBeReservedAgain() throws UserException {
         ReserveTicketRequest request = new ReserveTicketRequest();
-        request.setUserId(4L);
+        request.setUserId(1L);
         request.setEventId(2L);
-        request.setReservationId(12L);
+//        request.setReservationId(12L);
 
         ReserveTicketResponse response = ticketService.reserveTicket(request);
         log.info("Reserved Ticket Response{}", response);

@@ -1,5 +1,6 @@
 package com.eventbooking.events.services;
 
+import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
@@ -19,6 +20,6 @@ public interface TicketService {
     List<Ticket> searchTicketBy(String email, String eventName) throws UserException, TicketException;
 
     ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException;
-
+    Customer findBy(Long id);
 //    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException, UserException;
 }

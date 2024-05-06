@@ -29,9 +29,6 @@ public class TicketServiceImpl implements TicketService{
     private final CustomerService customerService;
     private final TicketRepository ticketRepository;
 
-//    public void setUserService(@Autowired UserService userService) {
-//        this.userService = userService;
-//    }
 
     @Override
     public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
@@ -67,13 +64,18 @@ public class TicketServiceImpl implements TicketService{
         Optional<Ticket> ticket = ticketRepository.findById(request.getEventId());
         Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
-        foundTicket.setReservationId(request.getReservationId());
+//        foundTicket.setReservationId(request.getReservationId());
         foundTicket.setTicketStatus(TicketStatus.RESERVED);
         foundTicket.setCustomer(customer);
         ticketRepository.save(foundTicket);
         ReserveTicketResponse response = new ReserveTicketResponse();
         response.setMessage(GenerateApiResponse.TICKET_RESERVED_SUCCESSFULLY);
         return response;
+    }
+
+    @Override
+    public Customer findBy(Long id) {
+        return customerService.findById(id);
     }
 
 
