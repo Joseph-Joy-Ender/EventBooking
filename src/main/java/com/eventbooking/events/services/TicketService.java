@@ -4,6 +4,7 @@ import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
@@ -21,5 +22,7 @@ public interface TicketService {
 
     ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException;
     Customer findBy(Long id);
+
+    CancelReservedTicketResponse cancelReservedTicket(Long reservationId) throws TicketException;
 //    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException, UserException;
 }

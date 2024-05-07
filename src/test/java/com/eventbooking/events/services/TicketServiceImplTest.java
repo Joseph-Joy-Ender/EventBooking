@@ -4,6 +4,7 @@ import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.data.model.TicketCategory;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
@@ -95,8 +96,8 @@ class TicketServiceImplTest {
 
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(2L);
-        request.setEventId(1L);
-//        request.setReservationId(10L);
+        request.setEventId(4L);
+        request.setReservationId(10L);
 
          ReserveTicketResponse response = ticketService.reserveTicket(request);
          assertThat(response).isNotNull();
@@ -107,13 +108,20 @@ class TicketServiceImplTest {
     public void testThatTicketCanBeReservedAgain() throws UserException {
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(1L);
-        request.setEventId(2L);
-//        request.setReservationId(12L);
+        request.setEventId(3L);
+        request.setReservationId(12L);
 
         ReserveTicketResponse response = ticketService.reserveTicket(request);
         log.info("Reserved Ticket Response{}", response);
         assertThat(response).isNotNull();
         assertThat(request.getUserId()).isNotNull();
+    }
+
+    @Test
+    public void testThatReservedTicketCanBeCancelled() throws TicketException {
+        Long reservationId = 10L;
+        CancelReservedTicketResponse response = ticketService.cancelReservedTicket(reservationId);
+        assertThat(response).isNotNull();
     }
 
     @Test

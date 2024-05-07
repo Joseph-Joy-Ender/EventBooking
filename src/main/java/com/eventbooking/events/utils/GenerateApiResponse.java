@@ -11,6 +11,7 @@ public class GenerateApiResponse {
     public static final String EVENT_DOES_NOT_EXIST = "Event does not exist";
     public static final String TICKET_NOT_FOUND = "Ticket not found";
     public static final String TICKET_RESERVED_SUCCESSFULLY = "Ticket reserved successfully";
+    public static final String TICKET_RESERVED_CANCELLED = "Reserved ticket has been cancelled";
 
     public static CreateAccountResponse create(Object data){
         return CreateAccountResponse.builder()

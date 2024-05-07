@@ -7,6 +7,7 @@ import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.repositories.TicketRepository;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
@@ -64,7 +65,7 @@ public class TicketServiceImpl implements TicketService{
         Optional<Ticket> ticket = ticketRepository.findById(request.getEventId());
         Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
-//        foundTicket.setReservationId(request.getReservationId());
+        foundTicket.setReservationId(request.getReservationId());
         foundTicket.setTicketStatus(TicketStatus.RESERVED);
         foundTicket.setCustomer(customer);
         ticketRepository.save(foundTicket);
@@ -76,6 +77,17 @@ public class TicketServiceImpl implements TicketService{
     @Override
     public Customer findBy(Long id) {
         return customerService.findById(id);
+    }
+
+    @Override
+    public CancelReservedTicketResponse cancelReservedTicket(Long reservationId) throws TicketException {
+        Ticket ticket = ticketRepository.findTicketByReservationId(reservationId);
+        if (ticket == null) throw new TicketException(GenerateApiResponse.TICKET_NOT_FOUND);
+        ticket.setTicketStatus(TicketStatus.CANCELLED);
+        ticketRepository.save(ticket);
+        CancelReservedTicketResponse response = new CancelReservedTicketResponse();
+        response.setMessage(GenerateApiResponse.TICKET_RESERVED_CANCELLED);
+        return response;
     }
 
 

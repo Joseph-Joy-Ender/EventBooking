@@ -23,7 +23,7 @@ public class Ticket {
     private TicketStatus ticketStatus;
     @ManyToOne
     private Customer customer;
-//    @Column(unique = true)
-//    private Long reservationId;
+    @Column(unique = true)
+    private Long reservationId;
 
 }
