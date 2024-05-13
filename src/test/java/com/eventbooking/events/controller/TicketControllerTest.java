@@ -2,7 +2,6 @@ package com.eventbooking.events.controller;
 
 import com.eventbooking.events.data.model.TicketCategory;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,9 @@ public class TicketControllerTest {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setPrice(BigDecimal.valueOf(50000));
         request.setCategory(TicketCategory.PREMIUM);
-        Long eventId = 1L;
+        request.setEventId(1L);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/createTicket/{eventId}", eventId)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/eventBooking/createTicket")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(request)))
                 .andExpect(status().is2xxSuccessful())

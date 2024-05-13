@@ -4,6 +4,7 @@ import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.data.model.TicketCategory;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.BookTicketResponse;
 import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
@@ -32,8 +33,9 @@ class TicketServiceImplTest {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setCategory(TicketCategory.EARLYBIRD);
         request.setPrice(BigDecimal.valueOf(20000));
+        request.setEventId(1L);
 
-        TicketResponse response = ticketService.createTicket(1L, request);
+        TicketResponse response = ticketService.createTicket(request);
         assertThat(response).isNotNull();
 
     }
@@ -42,8 +44,9 @@ class TicketServiceImplTest {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setCategory(TicketCategory.VIP);
         request.setPrice(BigDecimal.valueOf(50000));
+        request.setEventId(2L);
 
-        TicketResponse response = ticketService.createTicket(2L, request);
+        TicketResponse response = ticketService.createTicket(request);
         assertThat(response).isNotNull();
 
     }
@@ -52,8 +55,9 @@ class TicketServiceImplTest {
         CreateTicketRequest request = new CreateTicketRequest();
         request.setCategory(TicketCategory.PREMIUM);
         request.setPrice(BigDecimal.valueOf(40000));
+        request.setEventId(3L);
 
-        TicketResponse response = ticketService.createTicket(3L, request);
+        TicketResponse response = ticketService.createTicket(request);
         assertThat(response).isNotNull();
 
     }
@@ -96,7 +100,7 @@ class TicketServiceImplTest {
 
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(2L);
-        request.setEventId(4L);
+        request.setId(4L);
         request.setReservationId(10L);
 
          ReserveTicketResponse response = ticketService.reserveTicket(request);
@@ -108,7 +112,7 @@ class TicketServiceImplTest {
     public void testThatTicketCanBeReservedAgain() throws UserException {
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(1L);
-        request.setEventId(3L);
+        request.setId(3L);
         request.setReservationId(12L);
 
         ReserveTicketResponse response = ticketService.reserveTicket(request);
@@ -126,16 +130,10 @@ class TicketServiceImplTest {
 
     @Test
     public void testThatTicketCanBeBooked(){
-
-        /*
-        TODO
-        first check if the ticket is reserved
-        second if the ticket is reserved, retrieve the ticket from the database
-        third check if the reserved ticket is still available for booking
-        process payment
-        update ticket status to booked
-        send email to user to confirm booking
-        */
+        Long reservationId = 10L;
+        BookTicketResponse response = ticketService.bookTicket(reservationId);
+        assertThat(response).isNotNull();
     }
+
 
 }

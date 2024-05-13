@@ -4,6 +4,7 @@ import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.model.Ticket;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.BookTicketResponse;
 import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
@@ -14,7 +15,7 @@ import com.eventbooking.events.exceptions.UserException;
 import java.util.List;
 
 public interface TicketService {
-    TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException;
+    TicketResponse createTicket(CreateTicketRequest request) throws EventExistException;
 
     List<Ticket> searchTicketBy(String eventName) throws TicketException;
 
@@ -24,5 +25,7 @@ public interface TicketService {
     Customer findBy(Long id);
 
     CancelReservedTicketResponse cancelReservedTicket(Long reservationId) throws TicketException;
-//    List<Ticket> searchTicketBy(String email, String eventName) throws TicketException, UserException;
+
+    BookTicketResponse bookTicket(Long reservationId);
+
 }

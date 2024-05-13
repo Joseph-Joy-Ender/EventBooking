@@ -7,6 +7,7 @@ import com.eventbooking.events.data.model.Customer;
 import com.eventbooking.events.data.repositories.TicketRepository;
 import com.eventbooking.events.dtos.request.CreateTicketRequest;
 import com.eventbooking.events.dtos.request.ReserveTicketRequest;
+import com.eventbooking.events.dtos.response.BookTicketResponse;
 import com.eventbooking.events.dtos.response.CancelReservedTicketResponse;
 import com.eventbooking.events.dtos.response.ReserveTicketResponse;
 import com.eventbooking.events.dtos.response.TicketResponse;
@@ -32,8 +33,8 @@ public class TicketServiceImpl implements TicketService{
 
 
     @Override
-    public TicketResponse createTicket(Long eventId, CreateTicketRequest request) throws EventExistException {
-        Event event = eventService.findEventBy(eventId);
+    public TicketResponse createTicket(CreateTicketRequest request) throws EventExistException {
+        Event event = eventService.findEventBy(request.getEventId());
         Ticket ticket = new Ticket();
         ticket.setEventName(event.getEventName());
         ticket.setEventDate(event.getDate());
@@ -62,7 +63,7 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException {
-        Optional<Ticket> ticket = ticketRepository.findById(request.getEventId());
+        Optional<Ticket> ticket = ticketRepository.findById(request.getId());
         Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
         foundTicket.setReservationId(request.getReservationId());
@@ -88,6 +89,23 @@ public class TicketServiceImpl implements TicketService{
         CancelReservedTicketResponse response = new CancelReservedTicketResponse();
         response.setMessage(GenerateApiResponse.TICKET_RESERVED_CANCELLED);
         return response;
+    }
+
+    @Override
+    public BookTicketResponse bookTicket(Long reservationId) {
+         /*
+        TODO
+        first check if the ticket is reserved
+        second if the ticket is reserved, retrieve the ticket from the database
+        third check if the reserved ticket is still available for booking
+        process payment
+        update ticket status to booked
+        send email to user to confirm booking
+        */
+        Ticket ticket = ticketRepository.findTicketByReservationId(reservationId);
+        Customer customer = customerService.findById(ticket.getCustomer().getId());
+
+        return null;
     }
 
 

@@ -21,11 +21,10 @@ public class TicketController {
 
     private final TicketService ticketService;
 
-    @PostMapping("createTicket/{eventId}")
-    public ResponseEntity<TicketResponse> createTicket(@PathVariable Long eventId,
-                                                       @RequestBody CreateTicketRequest request)
+    @PostMapping("createTicket")
+    public ResponseEntity<TicketResponse> createTicket(@RequestBody CreateTicketRequest request)
             throws EventExistException {
-        return new ResponseEntity<>(ticketService.createTicket(eventId, request), HttpStatus.CREATED);
+        return new ResponseEntity<>(ticketService.createTicket(request), HttpStatus.CREATED);
     }
 
     @GetMapping("searchTicketBy/{eventName}")
