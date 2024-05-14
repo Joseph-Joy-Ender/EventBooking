@@ -82,10 +82,11 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public CancelReservedTicketResponse cancelReservedTicket(Long reservationId) throws TicketException {
-        Ticket ticket = ticketRepository.findTicketByReservationId(reservationId);
-        if (ticket == null) throw new TicketException(GenerateApiResponse.TICKET_NOT_FOUND);
-        ticket.setTicketStatus(TicketStatus.CANCELLED);
-        ticketRepository.save(ticket);
+        Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
+        if (ticket.isEmpty()) throw new TicketException(GenerateApiResponse.TICKET_NOT_FOUND);
+        Ticket foundTicket = ticket.get();
+        foundTicket.setTicketStatus(TicketStatus.CANCELLED);
+        ticketRepository.save(foundTicket);
         CancelReservedTicketResponse response = new CancelReservedTicketResponse();
         response.setMessage(GenerateApiResponse.TICKET_RESERVED_CANCELLED);
         return response;
@@ -102,8 +103,13 @@ public class TicketServiceImpl implements TicketService{
         update ticket status to booked
         send email to user to confirm booking
         */
-        Ticket ticket = ticketRepository.findTicketByReservationId(reservationId);
-        Customer customer = customerService.findById(ticket.getCustomer().getId());
+        Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
+        if (ticket.isPresent()){
+            Ticket foundTicket = ticket.get();
+            if (foundTicket.getTicketStatus().equals(TicketStatus.RESERVED)){
+
+            }
+        }
 
         return null;
     }
