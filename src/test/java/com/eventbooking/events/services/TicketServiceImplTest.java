@@ -100,7 +100,7 @@ class TicketServiceImplTest {
 
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(2L);
-        request.setId(4L);
+        request.setTicketId(4L);
         request.setReservationId(10L);
 
          ReserveTicketResponse response = ticketService.reserveTicket(request);
@@ -112,11 +112,22 @@ class TicketServiceImplTest {
     public void testThatTicketCanBeReservedAgain() throws UserException {
         ReserveTicketRequest request = new ReserveTicketRequest();
         request.setUserId(1L);
-        request.setId(3L);
+        request.setTicketId(3L);
         request.setReservationId(12L);
 
         ReserveTicketResponse response = ticketService.reserveTicket(request);
         log.info("Reserved Ticket Response{}", response);
+        assertThat(response).isNotNull();
+        assertThat(request.getUserId()).isNotNull();
+    }
+    @Test
+    public void testThatTicketCanBeReservedAgain2() throws UserException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(3L);
+        request.setTicketId(5L);
+        request.setReservationId(9L);
+
+        ReserveTicketResponse response = ticketService.reserveTicket(request);
         assertThat(response).isNotNull();
         assertThat(request.getUserId()).isNotNull();
     }
@@ -130,7 +141,7 @@ class TicketServiceImplTest {
 
     @Test
     public void testThatTicketCanBeBooked(){
-        Long reservationId = 10L;
+        Long reservationId = 9L;
         BookTicketResponse response = ticketService.bookTicket(reservationId);
         assertThat(response).isNotNull();
     }

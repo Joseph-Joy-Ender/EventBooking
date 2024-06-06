@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ReserveTicketRequest {
     private Long userId;
-    private Long id;
+    private Long ticketId;
     private Long reservationId;
 }

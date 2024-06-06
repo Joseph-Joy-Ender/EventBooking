@@ -30,6 +30,8 @@ public class TicketServiceImpl implements TicketService{
     private final ModelMapper mapper = new ModelMapper();
     private final CustomerService customerService;
     private final TicketRepository ticketRepository;
+    private final EmailService emailService;
+
 
 
     @Override
@@ -63,7 +65,7 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException {
-        Optional<Ticket> ticket = ticketRepository.findById(request.getId());
+        Optional<Ticket> ticket = ticketRepository.findById(request.getTicketId());
         Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
         foundTicket.setReservationId(request.getReservationId());
@@ -94,7 +96,21 @@ public class TicketServiceImpl implements TicketService{
 
     @Override
     public BookTicketResponse bookTicket(Long reservationId) {
-         /*
+        Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
+        if (ticket.isPresent()){
+            Ticket foundTicket = ticket.get();
+            if (foundTicket.getTicketStatus() == TicketStatus.RESERVED){
+                foundTicket.setTicketStatus(TicketStatus.BOOKED);
+                ticketRepository.save(foundTicket);
+            }
+        }
+        BookTicketResponse response = new BookTicketResponse();
+        response.setMessage(GenerateApiResponse.TICKET_BOOKED_SUCCESSFULLY);
+
+        return response;
+    }
+
+     /*
         TODO
         first check if the ticket is reserved
         second if the ticket is reserved, retrieve the ticket from the database
@@ -103,16 +119,5 @@ public class TicketServiceImpl implements TicketService{
         update ticket status to booked
         send email to user to confirm booking
         */
-        Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
-        if (ticket.isPresent()){
-            Ticket foundTicket = ticket.get();
-            if (foundTicket.getTicketStatus().equals(TicketStatus.RESERVED)){
-
-            }
-        }
-
-        return null;
-    }
-
 
 }

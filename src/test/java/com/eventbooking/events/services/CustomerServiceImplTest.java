@@ -38,6 +38,17 @@ public class CustomerServiceImplTest {
         assertThat("Cephas123@gmail.com").isEqualTo(accountRequest.getEmail());
 
     }
+    @Test
+    public void testThatUserCanCreateAccountAgain() throws UserException {
+        CreateAccountRequest accountRequest = new CreateAccountRequest();
+        accountRequest.setName("Joseph Joy Ender Udeme");
+        accountRequest.setEmail("joy828545@gmail.com");
+        accountRequest.setPassword("Ender123");
+        CreateAccountResponse response = customerService.createAccount(accountRequest);
+        assertThat(response).isNotNull();
+        assertThat("joy828545@gmail.com").isEqualTo(accountRequest.getEmail());
+
+    }
 
     @Test
     public void testThatUserCanCreateAccountAndCharacterValidation() throws UserException {
@@ -86,22 +97,5 @@ public class CustomerServiceImplTest {
         assertThat(customer).isNotNull();
         log.info("Found user {}", customer);
     }
-
-//    @Test
-//    public void testThatUserCanSearchForTicket() throws TicketException, UserException {
-//        String eventName = "Birthday party";
-//        String email = "Cephas123@gmail.com";
-//        List<Ticket> ticket = customerService.searchTicketBy(email, eventName);
-//        assertThat(ticket).hasSize(1);
-//        assertThat(ticket).isNotNull();
-//
-//    }
-//
-//    @Test
-//    public void testThatExceptionIsThrownWhenUserIsNotFound() {
-//        String eventName = "Birthday party";
-//        String email = "Raph123@gmail.com";
-//        assertThrows(UserException.class, ()-> customerService.searchTicketBy(email, eventName));
-//    }
 
 }

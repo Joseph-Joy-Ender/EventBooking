@@ -12,6 +12,7 @@ public class GenerateApiResponse {
     public static final String TICKET_NOT_FOUND = "Ticket not found";
     public static final String TICKET_RESERVED_SUCCESSFULLY = "Ticket reserved successfully";
     public static final String TICKET_RESERVED_CANCELLED = "Reserved ticket has been cancelled";
+    public static final String TICKET_BOOKED_SUCCESSFULLY = "Ticket booked successfully";
 
     public static CreateAccountResponse create(Object data){
         return CreateAccountResponse.builder()
