@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.eventbooking.events.data.model.TicketStatus.BOOKED;
+import static com.eventbooking.events.data.model.TicketStatus.RESERVED;
+
 @Service
 @AllArgsConstructor
 public class TicketServiceImpl implements TicketService{
@@ -69,7 +72,7 @@ public class TicketServiceImpl implements TicketService{
         Customer customer = customerService.findById(request.getUserId());
         Ticket foundTicket = ticket.get();
         foundTicket.setReservationId(request.getReservationId());
-        foundTicket.setTicketStatus(TicketStatus.RESERVED);
+        foundTicket.setTicketStatus(RESERVED);
         foundTicket.setCustomer(customer);
         ticketRepository.save(foundTicket);
         ReserveTicketResponse response = new ReserveTicketResponse();
@@ -99,8 +102,8 @@ public class TicketServiceImpl implements TicketService{
         Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
         if (ticket.isPresent()){
             Ticket foundTicket = ticket.get();
-            if (foundTicket.getTicketStatus() == TicketStatus.RESERVED){
-                foundTicket.setTicketStatus(TicketStatus.BOOKED);
+            if (foundTicket.getTicketStatus().equals(RESERVED)){
+                foundTicket.setTicketStatus(BOOKED);
                 ticketRepository.save(foundTicket);
             }
         }

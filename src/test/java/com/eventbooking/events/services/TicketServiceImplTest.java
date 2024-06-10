@@ -141,7 +141,7 @@ class TicketServiceImplTest {
 
     @Test
     public void testThatTicketCanBeBooked(){
-        Long reservationId = 9L;
+        Long reservationId = 12L;
         BookTicketResponse response = ticketService.bookTicket(reservationId);
         assertThat(response).isNotNull();
     }
