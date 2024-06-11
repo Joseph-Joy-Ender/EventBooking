@@ -38,8 +38,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t josephjoyender/EventBooking:latest .
+        run: docker build -t josephjoyender/eventBooking:latest .
 
       - name: Push Docker image to Docker Hub
-        run: docker push josephjoyender/EventBooking:latest 
+        run: docker push josephjoyender/eventBooking:latest 
       
