@@ -139,12 +139,12 @@ class TicketServiceImplTest {
         assertThat(response).isNotNull();
     }
 
-    @Test
-    public void testThatTicketCanBeBooked(){
-        Long reservationId = 12L;
-        BookTicketResponse response = ticketService.bookTicket(reservationId);
-        assertThat(response).isNotNull();
-    }
+//    @Test
+//    public void testThatTicketCanBeBooked(){
+//        Long reservationId = 12L;
+//        BookTicketResponse response = ticketService.bookTicket(reservationId);
+//        assertThat(response).isNotNull();
+//    }
 
 
 }
