@@ -20,6 +20,7 @@ public class Ticket {
     private LocalDate eventDate;
     private String eventName;
     @Enumerated(EnumType.STRING)
+    @Column(name = "ticket_status", length = 30)
     private TicketStatus ticketStatus;
     @ManyToOne
     private Customer customer;

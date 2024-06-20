@@ -70,11 +70,13 @@ public class TicketServiceImpl implements TicketService{
     public ReserveTicketResponse reserveTicket(ReserveTicketRequest request) throws UserException {
         Optional<Ticket> ticket = ticketRepository.findById(request.getTicketId());
         Customer customer = customerService.findById(request.getUserId());
-        Ticket foundTicket = ticket.get();
-        foundTicket.setReservationId(request.getReservationId());
-        foundTicket.setTicketStatus(RESERVED);
-        foundTicket.setCustomer(customer);
-        ticketRepository.save(foundTicket);
+        if (ticket.isPresent()) {
+            Ticket foundTicket = ticket.get();
+            foundTicket.setReservationId(request.getReservationId());
+            foundTicket.setTicketStatus(RESERVED);
+            foundTicket.setCustomer(customer);
+            ticketRepository.save(foundTicket);
+        }
         ReserveTicketResponse response = new ReserveTicketResponse();
         response.setMessage(GenerateApiResponse.TICKET_RESERVED_SUCCESSFULLY);
         return response;
