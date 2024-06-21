@@ -24,8 +24,8 @@ jobs:
 
     - name: Build and push Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/your-docker-image:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/your-docker-image:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/eventmanagement:latest .
+        docker push ${{ secrets.DOCKER_USERNAME }}/eventmanagement:latest
 
     - name: Install AWS CLI
       run: |
