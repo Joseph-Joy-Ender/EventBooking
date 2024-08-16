@@ -37,8 +37,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     @Override
     public CreateAccountResponse createAccount(CreateAccountRequest accountRequest) throws UserException {
         if (userRepository.existsByEmail(accountRequest.getEmail()))
-            throw new UserException(
-                GenerateApiResponse.ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXIST);
+            throw new UserException(GenerateApiResponse.ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXIST);
         Customer customer = mapper.map(accountRequest, Customer.class);
         customer.setPassword(passwordEncoder.encode(accountRequest.getPassword()));
         userRepository.save(customer);

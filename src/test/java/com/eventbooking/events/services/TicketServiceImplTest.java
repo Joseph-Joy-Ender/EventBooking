@@ -11,11 +11,13 @@ import com.eventbooking.events.dtos.response.TicketResponse;
 import com.eventbooking.events.exceptions.EventExistException;
 import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
+import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -67,6 +69,28 @@ class TicketServiceImplTest {
         request.setCategory(TicketCategory.PREMIUM);
         request.setPrice(BigDecimal.valueOf(90000));
         request.setEventId(4L);
+
+        TicketResponse response = ticketService.createTicket(request);
+        assertThat(response).isNotNull();
+
+    }
+    @Test
+    public void testThatTicketCanBeCreated5() throws EventExistException {
+        CreateTicketRequest request = new CreateTicketRequest();
+        request.setCategory(TicketCategory.EARLYBIRD);
+        request.setPrice(BigDecimal.valueOf(1000));
+        request.setEventId(8L);
+
+        TicketResponse response = ticketService.createTicket(request);
+        assertThat(response).isNotNull();
+
+    }
+    @Test
+    public void testThatTicketCanBeCreated6() throws EventExistException {
+        CreateTicketRequest request = new CreateTicketRequest();
+        request.setCategory(TicketCategory.EARLYBIRD);
+        request.setPrice(BigDecimal.valueOf(3000));
+        request.setEventId(10L);
 
         TicketResponse response = ticketService.createTicket(request);
         assertThat(response).isNotNull();
@@ -142,6 +166,28 @@ class TicketServiceImplTest {
         assertThat(response).isNotNull();
         assertThat(request.getUserId()).isNotNull();
     }
+    @Test
+    public void testThatTicketCanBeReservedAgain3() throws UserException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(4L);
+        request.setTicketId(21L);
+        request.setReservationId(5L);
+
+        ReserveTicketResponse response = ticketService.reserveTicket(request);
+        assertThat(response).isNotNull();
+        assertThat(request.getUserId()).isNotNull();
+    }
+    @Test
+    public void testThatTicketCanBeReservedAgain4() throws UserException {
+        ReserveTicketRequest request = new ReserveTicketRequest();
+        request.setUserId(5L);
+        request.setTicketId(22L);
+        request.setReservationId(7L);
+
+        ReserveTicketResponse response = ticketService.reserveTicket(request);
+        assertThat(response).isNotNull();
+        assertThat(request.getUserId()).isNotNull();
+    }
 
     @Test
     public void testThatReservedTicketCanBeCancelled() throws TicketException {
@@ -151,10 +197,44 @@ class TicketServiceImplTest {
     }
 
     @Test
-    public void testThatTicketCanBeBooked(){
+    public void testThatTicketCanBeBooked() throws MessagingException, IOException, TicketException {
         Long reservationId = 12L;
-        BookTicketResponse response = ticketService.bookTicket(reservationId);
+        Long customerId = 2L;
+        Long ticketId = 12L;
+        BookTicketResponse response = ticketService.bookTicket(reservationId,  customerId, ticketId);
         assertThat(response).isNotNull();
+    }
+    @Test
+    public void testThatTicketCanBeBooked2() throws MessagingException, IOException, TicketException {
+        Long reservationId = 9L;
+        Long customerId = 3L;
+        Long ticketId = 17L;
+        BookTicketResponse response = ticketService.bookTicket(reservationId, customerId, ticketId);
+        assertThat(response).isNotNull();
+    }
+    @Test
+    public void testThatTicketCanBeBooked3() throws MessagingException, IOException, TicketException {
+        Long reservationId = 5L;
+        Long customerId = 4L;
+        Long ticketId = 21L;
+        BookTicketResponse response = ticketService.bookTicket(reservationId, customerId, ticketId);
+        assertThat(response).isNotNull();
+    }
+    @Test
+    public void testThatTicketCanBeBooked4() throws MessagingException, IOException, TicketException {
+        Long reservationId = 7L;
+        Long customerId = 5L;
+        Long ticketId = 22L;
+        BookTicketResponse response = ticketService.bookTicket(reservationId, customerId, ticketId);
+        assertThat(response).isNotNull();
+    }
+
+    @Test
+    public void testThatExceptionIsThrownIfTicketAlreadyBooked() {
+        Long reservationId = 5L;
+        Long customerId = 4L;
+        Long ticketId = 21L;
+        assertThrows(TicketException.class, ()->ticketService.bookTicket(reservationId, customerId, ticketId));
     }
 
 

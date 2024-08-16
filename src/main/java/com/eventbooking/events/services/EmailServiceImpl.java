@@ -6,16 +6,15 @@ import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import static org.antlr.v4.runtime.misc.Utils.readFile;
 public class EmailServiceImpl implements EmailService{
 
     private final JavaMailSender emailSender;
+    private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
@@ -34,22 +34,21 @@ public class EmailServiceImpl implements EmailService{
     private ResourceLoader resourceLoader;
 
 
-    public void sendEmailFromTemplate(String to, String subject, Map<String, String> placeholders) throws MessagingException, IOException {
-        MimeMessage message = emailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+    public void sendEmailFromTemplate(String to, Map<String, Object> placeholders) throws MessagingException {
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
 
-        Resource resource = resourceLoader.getResource("classpath:template.html");
-        String htmlTemplate = new String(Files.readAllBytes(Paths.get(resource.getURI())));
+        Context context = new Context();
+        context.setVariables(placeholders);
+        String htmlContent = templateEngine.process("template", context);
 
-        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            htmlTemplate = htmlTemplate.replace("${" + entry.getKey() + "}", entry.getValue());
-        }
-
+        helper.setText(htmlContent, true);
         helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(htmlTemplate, true);
+        helper.setSubject("Ticket Booking Confirmation");
+        helper.setFrom("joy828545@example.com");
 
-        emailSender.send(message);
+
+        emailSender.send(mimeMessage);
     }
 
 
@@ -78,7 +77,7 @@ public class EmailServiceImpl implements EmailService{
         message.setSubject("Test email from my Springapplication");
 
         // Read the HTML template into a String variable
-        String htmlTemplate = Arrays.toString(readFile("template.html"));
+        String htmlTemplate = Arrays.toString(readFile("templates/template.html"));
 
         // Replace placeholders in the HTML template with dynamic values
         htmlTemplate = htmlTemplate.replace("${name}", "John Doe");

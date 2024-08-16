@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Setter
 @Getter
@@ -33,5 +34,10 @@ public class AddEventRequest {
     private String description;
     private String category;
     private String email;
+
+//    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+//    String formattedTime = time.format(formatter);
+
+
 
 }

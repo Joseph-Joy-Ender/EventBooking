@@ -15,11 +15,16 @@ import com.eventbooking.events.exceptions.EventExistException;
 import com.eventbooking.events.exceptions.TicketException;
 import com.eventbooking.events.exceptions.UserException;
 import com.eventbooking.events.utils.GenerateApiResponse;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.eventbooking.events.data.model.TicketStatus.BOOKED;
@@ -27,6 +32,7 @@ import static com.eventbooking.events.data.model.TicketStatus.RESERVED;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class TicketServiceImpl implements TicketService{
 
     private final EventService eventService;
@@ -34,7 +40,7 @@ public class TicketServiceImpl implements TicketService{
     private final CustomerService customerService;
     private final TicketRepository ticketRepository;
     private final EmailService emailService;
-
+//    private PaymentService paymentService;
 
 
     @Override
@@ -46,9 +52,7 @@ public class TicketServiceImpl implements TicketService{
         ticket.setCategory(request.getCategory());
         ticket.setPrice(request.getPrice());
         ticket.setTicketStatus(TicketStatus.AVAILABLE);
-
         Ticket savedTicket =  ticketRepository.save(ticket);
-
         return mapper.map(savedTicket, TicketResponse.class);
     }
 
@@ -83,8 +87,8 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public Customer findBy(Long id) {
-        return customerService.findById(id);
+    public Ticket findBy(Long id) throws TicketException {
+        return ticketRepository.findById(id).orElseThrow(() -> new TicketException(GenerateApiResponse.TICKET_NOT_FOUND));
     }
 
     @Override
@@ -100,29 +104,37 @@ public class TicketServiceImpl implements TicketService{
     }
 
     @Override
-    public BookTicketResponse bookTicket(Long reservationId) {
+    public BookTicketResponse bookTicket(Long reservationId, Long customerId, Long ticketId) throws MessagingException, IOException, TicketException {
         Optional<Ticket> ticket = ticketRepository.findTicketByReservationId(reservationId);
         if (ticket.isPresent()){
             Ticket foundTicket = ticket.get();
+            if (foundTicket.getTicketStatus().equals(BOOKED)){
+                throw new TicketException(GenerateApiResponse.TICKET_ALREADY_BOOKED);
+            }
             if (foundTicket.getTicketStatus().equals(RESERVED)){
                 foundTicket.setTicketStatus(BOOKED);
                 ticketRepository.save(foundTicket);
+//                paymentService.makePaymentFor(customerId, ticketId);
             }
+            emailSending(customerId, foundTicket);
         }
+
         BookTicketResponse response = new BookTicketResponse();
         response.setMessage(GenerateApiResponse.TICKET_BOOKED_SUCCESSFULLY);
 
         return response;
     }
 
-     /*
-        TODO
-        first check if the ticket is reserved
-        second if the ticket is reserved, retrieve the ticket from the database
-        third check if the reserved ticket is still available for booking
-        process payment
-        update ticket status to booked
-        send email to user to confirm booking
-        */
-
+    private void emailSending(Long id, Ticket foundTicket) throws MessagingException, IOException {
+        Customer customer = customerService.findById(id);
+        Map<String, Object> placeholders = new HashMap<>();
+        placeholders.put("customerName", customer.getName());
+        placeholders.put("eventName", foundTicket.getEventName());
+        placeholders.put("eventDate", String.valueOf(foundTicket.getEventDate()));
+        placeholders.put("price", String.valueOf(foundTicket.getPrice()));
+        placeholders.put("ticketStatus", String.valueOf(foundTicket.getTicketStatus()));
+        emailService.sendEmailFromTemplate(customer.getEmail(), placeholders);
+    }
+    
 }
+

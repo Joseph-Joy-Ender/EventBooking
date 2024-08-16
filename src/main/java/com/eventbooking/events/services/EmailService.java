@@ -7,6 +7,6 @@ import java.util.Map;
 
 public interface EmailService {
     void sendSimpleMailMessage(String name, String to, String token);
-    void sendEmailFromTemplate(String to, String subject, Map<String, String> placeholders) throws MessagingException, IOException;
+    void sendEmailFromTemplate(String to, Map<String, Object> placeholders) throws MessagingException, IOException;
 
 }

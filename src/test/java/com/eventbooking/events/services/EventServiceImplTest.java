@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -30,8 +31,8 @@ public class EventServiceImplTest {
         request.setAttendees(35);
         request.setDescription("A birthday surprise party for my dearest friend");
         request.setCategory(String.valueOf(Category.BIRTHDAY));
-
-
+        request.setTime(LocalTime.of(9, 10));
+        request.setLocation("Abuja");
         AddEventResponse response = eventService.createEvent(request);
 
         assertThat(response).isNotNull();
@@ -47,7 +48,8 @@ public class EventServiceImplTest {
         request.setAttendees(1000);
         request.setDescription("Burna Boy concert that's going to be holding at grand square. Be there!!!");
         request.setCategory(String.valueOf(Category.CONCERT));
-
+        request.setTime(LocalTime.of(17, 10));
+        request.setLocation("London");
 
         AddEventResponse response = eventService.createEvent(request);
         log.info("Add Event Response :: {}", response);
@@ -64,6 +66,8 @@ public class EventServiceImplTest {
         request.setAttendees(1000);
         request.setDescription("Burna Boy concert that's going to be holding at grand square. Be there!!!");
         request.setCategory(String.valueOf(Category.CONCERT));
+        request.setTime(LocalTime.of(17, 10));
+        request.setLocation("London");
 
         assertThat("Burna Boy Concert").isEqualTo(request.getEventName());
         assertThatExceptionOfType(EventExistException.class).isThrownBy(()-> eventService.createEvent(request));
@@ -71,7 +75,7 @@ public class EventServiceImplTest {
 
     @Test
     public void testThatEventCanBeGottenByTheId() throws EventExistException {
-        Event event = eventService.findEventBy(1L);
+        Event event = eventService.findEventBy(6L);
 
         log.info("Found event :: {}", event);
         assertThat(event).isNotNull();

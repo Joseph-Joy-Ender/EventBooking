@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Setter
@@ -19,5 +20,7 @@ public class Event {
     private String description;
     @Enumerated(value = EnumType.STRING)
     private Category category;
+    private LocalTime time;
+    private String location;
 
 }
